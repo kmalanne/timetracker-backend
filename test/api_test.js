@@ -74,6 +74,7 @@ describe('API', () => {
         chai.request(server)
           .post('/projects')
           .send({
+            id: 4,
             name: 'test_project',
             url: 'www.trolololo.ru',
           })
@@ -179,6 +180,7 @@ describe('API', () => {
         chai.request(server)
           .post('/timeEntries')
           .send({
+            id: 4,
             project: 1,
             user: 1,
             elapsed_time: 3000

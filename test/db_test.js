@@ -52,6 +52,7 @@ describe('DB', () => {
 
     it('should add a project', (done) => {
       const newProject = {
+        id: 4,
         name: 'test_project',
         url: 'http://test.fi',
       };
@@ -136,6 +137,7 @@ describe('DB', () => {
 
     it('should add a user', (done) => {
       const newUser = {
+        id: 2,
         oauth_id: 69696,
         name: 'Jorma Teras',
       };
@@ -187,6 +189,7 @@ describe('DB', () => {
 
     it('should add a time entry', (done) => {
       const newTimeEntry = {
+        id: 4,
         project: 1,
         user: 1,
         elapsed_time: 3600
@@ -199,19 +202,17 @@ describe('DB', () => {
           result.length.should.equal(1);
           result[0].should.be.a('object');
           result[0].should.have.property('id');
+          result[0].id.should.equal(4);
           result[0].should.have.property('project');
-          result[0].project.should.equal(1);
           result[0].should.have.property('user');
-          result[0].user.should.equal(1);
           result[0].should.have.property('elapsed_time');
-          result[0].elapsed_time.should.equal(3600);
           done();
         });
     });
 
     it('should delete a single time entry', (done) => {
       TimeEntry.deleteTimeEntry(1)
-        .then(() => TimeEntry.getTimeEntrys())
+        .then(() => TimeEntry.getTimeEntries())
         .then(result => {
           result.should.be.a('array')
           result.length.should.equal(2);
