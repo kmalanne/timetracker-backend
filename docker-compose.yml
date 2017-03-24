@@ -1,0 +1,21 @@
+version: '2'
+services:
+  app:
+    build: .
+    links:
+      - postgres
+    ports:
+      - '3000:3000'
+    volumes:
+      - '.:/app'
+  postgres:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    # persists data, remove when needed
+    #volumes:
+      #- ./data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres

@@ -1,0 +1,8 @@
+.env
+.vscode
+./src/app/config/auth.js
+.vscode
+*.log
+data
+remove_docker.sh
+node_modules/
