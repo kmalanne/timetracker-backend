@@ -9,8 +9,8 @@ exports.up = (knex, Promise) =>
 
     knex.schema.createTableIfNotExists('app_user', (user) => {
       user.increments('id').primary();
-      user.integer('oauth_id').unique().notNullable();
-      user.string('name').unique().notNullable();
+      user.string('email').unique().notNullable();
+      user.string('name').notNullable();
       user.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     }),
 

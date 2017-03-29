@@ -115,22 +115,22 @@ describe('DB', () => {
           result[0].should.be.a('object');
           result[0].should.have.property('name');
           result[0].name.should.equal('Testy McTestface');
-          result[0].should.have.property('oauth_id');
-          result[0].oauth_id.should.equal(12345);
+          result[0].should.have.property('email');
+          result[0].email.should.equal('test@test.com');
           done();
         });
     });
 
-    it('should return a single user with oauth_id', (done) => {
-      User.getUserByOAuthID(12345)
+    it('should return a single user with email', (done) => {
+      User.getUserByEmail('test@test.com')
         .then(result => {
           result.should.be.a('array')
           result.length.should.equal(1);
           result[0].should.be.a('object');
           result[0].should.have.property('name');
           result[0].name.should.equal('Testy McTestface');
-          result[0].should.have.property('oauth_id');
-          result[0].oauth_id.should.equal(12345);
+          result[0].should.have.property('email');
+          result[0].email.should.equal('test@test.com');
           done();
         });
     });
@@ -138,7 +138,7 @@ describe('DB', () => {
     it('should add a user', (done) => {
       const newUser = {
         id: 2,
-        oauth_id: 69696,
+        email: 'jorma@maansiirtofirma.fi',
         name: 'Jorma Teras',
       };
 
@@ -150,8 +150,8 @@ describe('DB', () => {
           result[0].should.be.a('object');
           result[0].should.have.property('name');
           result[0].name.should.equal('Jorma Teras');
-          result[0].should.have.property('oauth_id');
-          result[0].oauth_id.should.equal(69696);
+          result[0].should.have.property('email');
+          result[0].email.should.equal('jorma@maansiirtofirma.fi');
           done();
         });
     });

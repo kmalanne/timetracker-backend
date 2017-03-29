@@ -9,34 +9,36 @@ function parseId(id) {
 // Project
 const Project = {
   getProjects() {
-    return knex(table)
-            .orderBy('id', 'asc')
-            .then(rows => Promise.resolve(rows));
+    return knex.select('*')
+      .from(table)
+      .orderBy('id', 'asc')
+      .then(rows => Promise.resolve(rows));
   },
 
   getProjectById(id) {
-    return knex(table)
-            .where('id', parseId(id))
-            .then(rows => Promise.resolve(rows));
+    return knex.select('*')
+      .from(table)
+      .where('id', parseId(id))
+      .then(rows => Promise.resolve(rows));
   },
 
   createProject(project) {
     return knex(table)
-            .insert(project, 'id')
-            .then(rows => Promise.resolve(rows));
+      .insert(project, 'id')
+      .then(rows => Promise.resolve(rows));
   },
 
   updateProject(id, updates) {
     return knex(table)
-            .where('id', parseId(id))
-            .update(updates)
-            .then(rows => Promise.resolve(rows));
+      .where('id', parseId(id))
+      .update(updates)
+      .then(rows => Promise.resolve(rows));
   },
 
   deleteProject(id) {
     return knex(table)
-            .where('id', parseId(id))
-            .del();
+      .where('id', parseId(id))
+      .del();
   },
 };
 

@@ -1,16 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const passport = require('passport');
-const session = require('express-session');
+const jwt = require('express-jwt');
+const cors = require('cors');
+const dotenv = require('dotenv');
 
-const auth = require('./routes/auth');
 const projects = require('./routes/projects');
 const timeEntries = require('./routes/time_entries');
 const error = require('./routes/error');
 
-require('./config/passport.js')(passport);
-
 module.exports = () => {
+  dotenv.load();
+
   const app = express();
 
   app.use(bodyParser.urlencoded({
@@ -18,24 +18,15 @@ module.exports = () => {
   }));
   app.use(bodyParser.json());
 
-  app.use(session({
-    secret: 'my_secret',
-    resave: false,
-    saveUninitialized: false,
-  }));
-  app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(cors());
 
-  // const authenticated = (req, res, next) => {
-  //   if (req.isAuthenticated()) {
-  //     return next();
-  //   }
-  //   return res.sendStatus(401);
-  // };
+  const authenticate = jwt({
+    secret: process.env.AUTH0_CLIENT_SECRET || 'wolololo',
+    audience: process.env.AUTH0_CLIENT_ID || 'audience',
+  });
 
   app.use('/projects', projects);
   app.use('/timeEntries', timeEntries);
-  app.use('/auth', auth);
   app.use(error);
 
   return app;

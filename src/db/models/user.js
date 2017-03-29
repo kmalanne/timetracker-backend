@@ -8,21 +8,23 @@ function parseId(id) {
 
 const User = {
   getUserById(id) {
-    return knex(table)
-            .where('id', parseId(id))
-            .then(rows => Promise.resolve(rows));
+    return knex.select('*')
+      .from(table)
+      .where('id', parseId(id))
+      .then(rows => Promise.resolve(rows));
   },
 
-  getUserByOAuthID(id) {
-    return knex(table)
-            .where('oauth_id', id)
-            .then(rows => Promise.resolve(rows));
+  getUserByEmail(email) {
+    return knex.select('*')
+      .from(table)
+      .where('email', email)
+      .then(rows => Promise.resolve(rows));
   },
 
   createUser(user) {
     return knex(table)
-            .insert(user, 'id')
-            .then(rows => Promise.resolve(rows));
+      .insert(user, 'id')
+      .then(rows => Promise.resolve(rows));
   },
 };
 

@@ -9,27 +9,29 @@ function parseId(id) {
 // TimeEntry
 const TimeEntry = {
   getTimeEntries() {
-    return knex(table)
-            .orderBy('id', 'asc')
-            .then(rows => Promise.resolve(rows));
+    return knex.select('*')
+      .from(table)
+      .orderBy('id', 'asc')
+      .then(rows => Promise.resolve(rows));
   },
 
   getTimeEntryById(id) {
-    return knex(table)
-            .where('id', parseId(id))
-            .then(rows => Promise.resolve(rows));
+    return knex.select('*')
+      .from(table)
+      .where('id', parseId(id))
+      .then(rows => Promise.resolve(rows));
   },
 
   createTimeEntry(timeEntry) {
     return knex(table)
-            .insert(timeEntry, 'id')
-            .then(rows => Promise.resolve(rows));
+      .insert(timeEntry, 'id')
+      .then(rows => Promise.resolve(rows));
   },
 
   deleteTimeEntry(id) {
     return knex(table)
-            .where('id', parseId(id))
-            .del();
+      .where('id', parseId(id))
+      .del();
   },
 };
 
