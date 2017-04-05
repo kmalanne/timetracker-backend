@@ -1,6 +1,7 @@
 /* eslint-disable */
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const jwt = require('jsonwebtoken');
 const server = require('../src/server').server;
 const knex = require('../src/db/db');
 
@@ -9,10 +10,33 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('API', () => {
+  let token = null;
+  let user = null;
+
+  function signUp() {
+    chai.request(server)
+      .post('/signup')
+      .send({
+        user_id: 'id12345',
+        email: 'test@test.com',
+        name: 'Testy McTestface',
+      })
+      .end((err, res) => {
+        user = res.body;
+      });
+  }
+
+  function createTestToken() {
+    const secret = process.env.AUTH0_CLIENT_SECRET || 'wolololo';
+    token = `Bearer ${jwt.sign({ user }, secret)}`;
+  }
+
   beforeEach((done) => {
     knex.migrate.rollback()
       .then(() => knex.migrate.latest())
       .then(() => knex.seed.run())
+      .then(() => signUp())
+      .then(() => createTestToken())
       .then(() => done());
   });
 
@@ -40,9 +64,19 @@ describe('API', () => {
       it('should return all projects', (done) => {
         chai.request(server)
           .get('/projects')
+          .set('Authorization', token)
           .end((err, res) => {
             res.should.have.status(200);
             res.should.be.json;
+            done();
+          });
+      });
+
+      it('should not get projects without authorization', (done) => {
+        chai.request(server)
+          .get('/projects')
+          .end((err, res) => {
+            res.should.have.status(401);
             done();
           });
       });
@@ -52,6 +86,7 @@ describe('API', () => {
       it('should return a single project', (done) => {
         chai.request(server)
           .get('/projects/1')
+          .set('Authorization', token)
           .end((err, res) => {
             res.should.have.status(200);
             res.should.be.json;
@@ -62,8 +97,18 @@ describe('API', () => {
       it('should return bad request with invalid id', (done) => {
         chai.request(server)
           .get('/projects/scam')
+          .set('Authorization', token)
           .end((err, res) => {
             res.should.have.status(400);
+            done();
+          });
+      });
+
+      it('should not get project without authorization', (done) => {
+        chai.request(server)
+          .get('/projects/1')
+          .end((err, res) => {
+            res.should.have.status(401);
             done();
           });
       });
@@ -73,6 +118,7 @@ describe('API', () => {
       it('should add a project', (done) => {
         chai.request(server)
           .post('/projects')
+          .set('Authorization', token)
           .send({
             id: 4,
             name: 'test_project',
@@ -88,6 +134,7 @@ describe('API', () => {
       it('should return bad request with invalid body', (done) => {
         chai.request(server)
           .post('/projects')
+          .set('Authorization', token)
           .send({
             name: 1,
             url: 2,
@@ -97,12 +144,22 @@ describe('API', () => {
             done();
           });
       });
+
+      it('should not add projects without authorization', (done) => {
+        chai.request(server)
+          .post('/projects')
+          .end((err, res) => {
+            res.should.have.status(401);
+            done();
+          });
+      });
     });
 
     describe('PUT /projects/:id', () => {
       it('should update a project', (done) => {
         chai.request(server)
           .put('/projects/1')
+          .set('Authorization', token)
           .send({
             name: 'another_value',
             url: 'http://another_url.com',
@@ -117,6 +174,7 @@ describe('API', () => {
       it('should return bad request with invalid id', (done) => {
         chai.request(server)
           .put('/projects/scamelot')
+          .set('Authorization', token)
           .send({
             name: 'invalid_request',
             url: 'invalid_request',
@@ -130,6 +188,7 @@ describe('API', () => {
       it('should return bad request with invalid body', (done) => {
         chai.request(server)
           .put('/projects/1')
+          .set('Authorization', token)
           .send({
             name: 1,
             url: 2,
@@ -139,12 +198,22 @@ describe('API', () => {
             done();
           });
       });
+
+      it('should not update projects without authorization', (done) => {
+        chai.request(server)
+          .put('/projects/1')
+          .end((err, res) => {
+            res.should.have.status(401);
+            done();
+          });
+      });
     });
 
     describe('DELETE /projects/:id', () => {
       it('should delete a single project', (done) => {
         chai.request(server)
           .delete('/projects/1')
+          .set('Authorization', token)
           .end((error, response) => {
             response.should.have.status(200);
             done();
@@ -154,8 +223,18 @@ describe('API', () => {
       it('should return bad request with invalid id', (done) => {
         chai.request(server)
           .delete('/projects/"#€%€#')
+          .set('Authorization', token)
           .end((error, response) => {
             response.should.have.status(400);
+            done();
+          });
+      });
+
+      it('should not delete projects without authorization', (done) => {
+        chai.request(server)
+          .delete('/projects/1')
+          .end((err, res) => {
+            res.should.have.status(401);
             done();
           });
       });
@@ -167,9 +246,19 @@ describe('API', () => {
       it('should return all time entries', (done) => {
         chai.request(server)
           .get('/timeEntries')
+          .set('Authorization', token)
           .end((err, res) => {
             res.should.have.status(200);
             res.should.be.json;
+            done();
+          });
+      });
+
+      it('should not get time entries without authorization', (done) => {
+        chai.request(server)
+          .get('/timeEntries')
+          .end((err, res) => {
+            res.should.have.status(401);
             done();
           });
       });
@@ -179,6 +268,7 @@ describe('API', () => {
       it('should add a time entry', (done) => {
         chai.request(server)
           .post('/timeEntries')
+          .set('Authorization', token)
           .send({
             id: 4,
             project: 1,
@@ -195,6 +285,7 @@ describe('API', () => {
       it('should return bad request with invalid body', (done) => {
         chai.request(server)
           .post('/timeEntries')
+          .set('Authorization', token)
           .send({
             project: 'asdf',
             user: 'herp',
@@ -205,12 +296,22 @@ describe('API', () => {
             done();
           });
       });
+
+      it('should not add time entry without authorization', (done) => {
+        chai.request(server)
+          .post('/timeEntries')
+          .end((err, res) => {
+            res.should.have.status(401);
+            done();
+          });
+      });
     });
 
     describe('DELETE /timeEntries/:id', () => {
       it('should delete a single time entry', (done) => {
         chai.request(server)
           .delete('/timeEntries/1')
+          .set('Authorization', token)
           .end((error, response) => {
             response.should.have.status(200);
             done();
@@ -220,8 +321,18 @@ describe('API', () => {
       it('should return bad request with invalid id', (done) => {
         chai.request(server)
           .delete('/timeEntries/"#€%€#')
+          .set('Authorization', token)
           .end((error, response) => {
             response.should.have.status(400);
+            done();
+          });
+      });
+
+      it('should not delete time entry without authorization', (done) => {
+        chai.request(server)
+          .delete('/timeEntries/1')
+          .end((err, res) => {
+            res.should.have.status(401);
             done();
           });
       });

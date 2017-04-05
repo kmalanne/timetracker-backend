@@ -121,8 +121,11 @@ describe('DB', () => {
         });
     });
 
-    it('should return a single user with email', (done) => {
-      User.getUserByEmail('test@test.com')
+    it('should return a single user with email and user id', (done) => {
+      User.getUser({
+        user_id: 'id12345',
+        email: 'test@test.com',
+      })
         .then(result => {
           result.should.be.a('array')
           result.length.should.equal(1);
@@ -131,6 +134,8 @@ describe('DB', () => {
           result[0].name.should.equal('Testy McTestface');
           result[0].should.have.property('email');
           result[0].email.should.equal('test@test.com');
+          result[0].should.have.property('user_id');
+          result[0].user_id.should.equal('id12345');
           done();
         });
     });
@@ -138,6 +143,7 @@ describe('DB', () => {
     it('should add a user', (done) => {
       const newUser = {
         id: 2,
+        user_id: 'id54321',
         email: 'jorma@maansiirtofirma.fi',
         name: 'Jorma Teras',
       };
@@ -152,6 +158,8 @@ describe('DB', () => {
           result[0].name.should.equal('Jorma Teras');
           result[0].should.have.property('email');
           result[0].email.should.equal('jorma@maansiirtofirma.fi');
+          result[0].should.have.property('user_id');
+          result[0].user_id.should.equal('id54321');
           done();
         });
     });

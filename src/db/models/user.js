@@ -7,17 +7,20 @@ function parseId(id) {
 }
 
 const User = {
+  getUser(params) {
+    return knex.select('*')
+      .from(table)
+      .where({
+        user_id: params.user_id,
+        email: params.email,
+      })
+      .then(rows => Promise.resolve(rows));
+  },
+
   getUserById(id) {
     return knex.select('*')
       .from(table)
       .where('id', parseId(id))
-      .then(rows => Promise.resolve(rows));
-  },
-
-  getUserByEmail(email) {
-    return knex.select('*')
-      .from(table)
-      .where('email', email)
       .then(rows => Promise.resolve(rows));
   },
 

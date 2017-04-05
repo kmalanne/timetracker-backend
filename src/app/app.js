@@ -4,6 +4,7 @@ const jwt = require('express-jwt');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+const signup = require('./routes/signup');
 const projects = require('./routes/projects');
 const timeEntries = require('./routes/time_entries');
 const error = require('./routes/error');
@@ -22,11 +23,11 @@ module.exports = () => {
 
   const authenticate = jwt({
     secret: process.env.AUTH0_CLIENT_SECRET || 'wolololo',
-    audience: process.env.AUTH0_CLIENT_ID || 'audience',
   });
 
-  app.use('/projects', projects);
-  app.use('/timeEntries', timeEntries);
+  app.use('/signup', signup);
+  app.use('/projects', authenticate, projects);
+  app.use('/timeEntries', authenticate, timeEntries);
   app.use(error);
 
   return app;
