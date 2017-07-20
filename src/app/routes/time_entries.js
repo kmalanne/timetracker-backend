@@ -2,26 +2,28 @@ const express = require('express');
 const validate = require('express-validation');
 const validations = require('./validations/time_entries');
 const TimeEntry = require('../../db/models/time_entry');
+const asyncRequest = require('../utils/asyncRequest');
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-  TimeEntry.getTimeEntries()
-    .then(result => res.status(200).json(result))
-    .catch(error => next(error));
-});
+const getTimeEntries = async (req, res, next) => {
+  const result = await TimeEntry.getTimeEntries();
+  res.status(200).json(result);
+};
 
-router.post('/', validate(validations.create), (req, res, next) => {
-  TimeEntry.createTimeEntry(req.body)
-    .then(id => TimeEntry.getTimeEntryById(id))
-    .then(result => res.status(200).json(result))
-    .catch(error => next(error));
-});
+const createTimeEntry = async (req, res, next) => {
+  const id = await TimeEntry.createTimeEntry(req.body);
+  const result = await TimeEntry.getTimeEntryById(id);
+  res.status(200).json(result);
+};
 
-router.delete('/:id', validate(validations.delete), (req, res, next) => {
-  TimeEntry.deleteTimeEntry(req.params.id)
-    .then(result => res.status(200).json(result))
-    .catch(error => next(error));
-});
+const deleteTimeEntry = async (req, res, next) => {
+  const result = TimeEntry.deleteTimeEntry(req.params.id);
+  res.status(200).json(result);
+};
+
+router.get('/', asyncRequest.bind(null, getTimeEntries));
+router.post('/', validate(validations.create), asyncRequest.bind(null, createTimeEntry));
+router.delete('/:id', validate(validations.delete), asyncRequest.bind(null, deleteTimeEntry));
 
 module.exports = router;

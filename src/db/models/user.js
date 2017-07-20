@@ -7,27 +7,30 @@ function parseId(id) {
 }
 
 const User = {
-  getUser(params) {
-    return knex.select('*')
+  async getUser(params) {
+    const rows = await knex.select('*')
       .from(table)
       .where({
         user_id: params.user_id,
         email: params.email,
-      })
-      .then(rows => Promise.resolve(rows));
+      });
+
+    return rows;
   },
 
-  getUserById(id) {
-    return knex.select('*')
+  async getUserById(id) {
+    const rows = await knex.select('*')
       .from(table)
-      .where('id', parseId(id))
-      .then(rows => Promise.resolve(rows));
+      .where('id', parseId(id));
+
+    return rows;
   },
 
-  createUser(user) {
-    return knex(table)
-      .insert(user, 'id')
-      .then(rows => Promise.resolve(rows));
+  async createUser(user) {
+    const rows = await knex(table)
+      .insert(user, 'id');
+
+    return rows;
   },
 };
 

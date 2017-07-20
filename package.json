@@ -8,7 +8,7 @@
   "scripts": {
     "start": "nodemon src/server.js --exec babel-node",
     "lint": "./node_modules/.bin/eslint src/**/*.js",
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --compilers js:babel-register --require babel-polyfill",
     "migrate": "NODE_ENV=test ./node_modules/.bin/knex migrate:latest --knexfile src/db/knexfile.js",
     "seed": "NODE_ENV=test ./node_modules/.bin/knex seed:run --knexfile src/db/knexfile.js",
     "db_up": "npm run migrate && npm run seed"
@@ -20,8 +20,7 @@
     "docker"
   ],
   "dependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
+    "babel-polyfill": "^6.23.0",
     "body-parser": "^1.16.1",
     "cors": "^2.8.2",
     "dotenv": "^4.0.0",
@@ -33,6 +32,9 @@
     "pg": "^6.1.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-preset-latest": "^6.24.1",
+    "babel-register": "^6.24.1",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "eslint": "^3.15.0",
