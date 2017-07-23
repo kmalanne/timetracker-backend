@@ -1,10 +1,7 @@
-const knex = require('../db.js');
+const knex = require('../db');
+const parseId = require('../utils/parseId');
 
 const table = 'app_user';
-
-function parseId(id) {
-  return parseInt(id, 10);
-}
 
 const User = {
   async getUser(params) {

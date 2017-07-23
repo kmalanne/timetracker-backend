@@ -6,18 +6,18 @@ const asyncRequest = require('../utils/asyncRequest');
 
 const router = express.Router();
 
-const getTimeEntries = async (req, res, next) => {
+const getTimeEntries = async (req, res) => {
   const result = await TimeEntry.getTimeEntries();
   res.status(200).json(result);
 };
 
-const createTimeEntry = async (req, res, next) => {
+const createTimeEntry = async (req, res) => {
   const id = await TimeEntry.createTimeEntry(req.body);
   const result = await TimeEntry.getTimeEntryById(id);
   res.status(200).json(result);
 };
 
-const deleteTimeEntry = async (req, res, next) => {
+const deleteTimeEntry = async (req, res) => {
   const result = TimeEntry.deleteTimeEntry(req.params.id);
   res.status(200).json(result);
 };

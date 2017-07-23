@@ -6,30 +6,30 @@ const asyncRequest = require('../utils/asyncRequest');
 
 const router = express.Router();
 
-const getProjects = async (req, res, next) => {
+const getProjects = async (req, res) => {
   const result = await Project.getProjects();
   res.status(200).json(result);
 };
 
-const getProjectById = async (req, res, next) => {
+const getProjectById = async (req, res) => {
   const result = await Project.getProjectById(req.params.id);
   res.status(200).json(result);
 };
 
-const createProject = async (req, res, next) => {
+const createProject = async (req, res) => {
   const id = await Project.createProject(req.body);
   const result = await Project.getProjectById(id);
   res.status(200).json(result);
 };
 
-const updateProject = async (req, res, next) => {
+const updateProject = async (req, res) => {
   await Project.updateProject(req.params.id, req.body);
   const result = await Project.getProjectById(req.params.id);
   res.status(200).json(result);
 };
 
-const deleteProject = async (req, res, next) => {
-  const result = await Project.deleteProject(req.params.id)
+const deleteProject = async (req, res) => {
+  const result = await Project.deleteProject(req.params.id);
   res.status(200).json(result);
 };
 

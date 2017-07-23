@@ -1,10 +1,7 @@
-const knex = require('../db.js');
+const knex = require('../db');
+const parseId = require('../utils/parseId');
 
 const table = 'time_entry';
-
-function parseId(id) {
-  return parseInt(id, 10);
-}
 
 // TimeEntry
 const TimeEntry = {

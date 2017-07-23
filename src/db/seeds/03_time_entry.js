@@ -21,4 +21,4 @@ exports.seed = async (knex, Promise) => {
       elapsed_time: 300,
     }),
   ]);
-}
+};
