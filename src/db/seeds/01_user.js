@@ -4,8 +4,6 @@ exports.seed = async (knex, Promise) => {
     knex('app_user').insert({
       id: 1,
       user_id: 'id12345',
-      email: 'test@test.com',
-      name: 'Testy McTestface',
     }),
   ]);
 };

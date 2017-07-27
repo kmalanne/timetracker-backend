@@ -7,7 +7,6 @@ const router = express.Router();
 const createUser = async (req, res) => {
   const user = await User.getUser({
     user_id: req.body.user_id,
-    email: req.body.email,
   });
 
   if (user !== null) {
@@ -15,8 +14,6 @@ const createUser = async (req, res) => {
   } else {
     const newUser = {
       user_id: req.body.user_id,
-      email: req.body.email,
-      name: req.body.name,
     };
 
     const id = await User.createUser(newUser);

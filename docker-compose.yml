@@ -13,8 +13,8 @@ services:
     ports:
       - '5432:5432'
     # persists data, remove when needed
-    #volumes:
-      #- ./data:/var/lib/postgresql/data
+    # volumes:
+    #   - ./data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres

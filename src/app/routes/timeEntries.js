@@ -1,7 +1,7 @@
 const express = require('express');
 const validate = require('express-validation');
-const validations = require('./validations/time_entries');
-const TimeEntry = require('../../db/models/time_entry');
+const validations = require('./validations/timeEntries');
+const TimeEntry = require('../../db/models/timeEntry');
 const asyncRequest = require('../utils/asyncRequest');
 
 const router = express.Router();

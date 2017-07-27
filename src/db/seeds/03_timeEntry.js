@@ -3,20 +3,20 @@ exports.seed = async (knex, Promise) => {
 
   return Promise.all([
     knex('time_entry').insert({
-      id: 1,
-      project: 1,
+      id: 1001,
+      project: 1001,
       user: 1,
       elapsed_time: 3600,
     }),
     knex('time_entry').insert({
-      id: 2,
-      project: 2,
+      id: 1002,
+      project: 1002,
       user: 1,
       elapsed_time: 100000,
     }),
     knex('time_entry').insert({
-      id: 3,
-      project: 3,
+      id: 1003,
+      project: 1003,
       user: 1,
       elapsed_time: 300,
     }),

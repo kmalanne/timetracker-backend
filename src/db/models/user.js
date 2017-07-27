@@ -4,23 +4,31 @@ const parseId = require('../utils/parseId');
 const table = 'app_user';
 
 const User = {
-  async getUser(params) {
-    const rows = await knex.select('*')
+  async getUser(userId) {
+    let user = await knex.first('*')
       .from(table)
       .where({
-        user_id: params.user_id,
-        email: params.email,
+        user_id: userId,
       });
 
-    return rows;
+    if (user === undefined) {
+      const newUser = {
+        user_id: userId,
+      };
+
+      const id = await this.createUser(newUser);
+      user = await this.getUserById(id);
+    }
+
+    return user;
   },
 
   async getUserById(id) {
-    const rows = await knex.select('*')
+    const user = await knex.first('*')
       .from(table)
       .where('id', parseId(id));
 
-    return rows;
+    return user;
   },
 
   async createUser(user) {

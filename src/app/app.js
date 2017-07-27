@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 
 const signup = require('./routes/signup');
 const projects = require('./routes/projects');
-const timeEntries = require('./routes/time_entries');
+const timeEntries = require('./routes/timeEntries');
 const error = require('./routes/error');
 
 module.exports = () => {

@@ -13,32 +13,25 @@ chai.use(chaiHttp);
 
 describe('API', () => {
   let token = null;
-  let user = null;
 
-  function signUp() {
-    chai.request(server)
-      .post('/signup')
-      .send({
-        user_id: 'id12345',
-        email: 'test@test.com',
-        name: 'Testy McTestface',
-      })
-      .end((err, res) => {
-        user = res.body;
-      });
+  async function getUser() {
+    const user = {
+      sub: 'id12345',
+    };
+    return JSON.stringify(user);
   }
 
-  function createTestToken() {
+  function createTestToken(user) {
     const secret = process.env.AUTH0_CLIENT_SECRET || 'wolololo';
-    token = `Bearer ${jwt.sign({ user }, secret)}`;
+    token = `Bearer ${jwt.sign(user, secret)}`;
   }
 
   beforeEach((done) => {
     knex.migrate.rollback()
       .then(() => knex.migrate.latest())
       .then(() => knex.seed.run())
-      .then(() => signUp())
-      .then(() => createTestToken())
+      .then(() => getUser())
+      .then(user => createTestToken(user))
       .then(() => done());
   });
 
@@ -122,9 +115,10 @@ describe('API', () => {
           .post('/projects')
           .set('Authorization', token)
           .send({
-            id: 4,
-            name: 'test_project',
-            url: 'www.trolololo.ru',
+            params: {
+              name: 'test_project',
+              url: 'www.trolololo.ru',
+            }
           })
           .end((err, res) => {
             res.should.have.status(200);
@@ -138,8 +132,10 @@ describe('API', () => {
           .post('/projects')
           .set('Authorization', token)
           .send({
-            name: 1,
-            url: 2,
+            params: {
+              name: 1,
+              url: 2,
+            }
           })
           .end((err, res) => {
             res.should.have.status(400);
@@ -160,11 +156,13 @@ describe('API', () => {
     describe('PUT /projects/:id', () => {
       it('should update a project', (done) => {
         chai.request(server)
-          .put('/projects/1')
+          .put('/projects/1001')
           .set('Authorization', token)
           .send({
-            name: 'another_value',
-            url: 'http://another_url.com',
+            params: {
+              name: 'another_value',
+              url: 'http://another_url.com',
+            }
           })
           .end((err, res) => {
             res.should.have.status(200);
@@ -178,8 +176,10 @@ describe('API', () => {
           .put('/projects/scamelot')
           .set('Authorization', token)
           .send({
-            name: 'invalid_request',
-            url: 'invalid_request',
+            params: {
+              name: 'invalid_request',
+              url: 'invalid_request',
+            }
           })
           .end((err, res) => {
             res.should.have.status(400);
@@ -192,8 +192,10 @@ describe('API', () => {
           .put('/projects/1')
           .set('Authorization', token)
           .send({
-            name: 1,
-            url: 2,
+            params: {
+              name: 1,
+              url: 2,
+            }
           })
           .end((err, res) => {
             res.should.have.status(400);
@@ -272,8 +274,7 @@ describe('API', () => {
           .post('/timeEntries')
           .set('Authorization', token)
           .send({
-            id: 4,
-            project: 1,
+            project: 1001,
             user: 1,
             elapsed_time: 3000
           })

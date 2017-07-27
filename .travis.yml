@@ -5,7 +5,7 @@ node_js:
 addons:
   postgresql: 9.4
 before_script:
-  - psql -f ./src/db/tools/init_db.sql -U postgres
+  - psql -f ./src/db/tools/initDB.sql -U postgres
   - npm install
 script:
   - npm run lint
