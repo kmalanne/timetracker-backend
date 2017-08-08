@@ -10,6 +10,12 @@ module.exports = {
     },
   },
 
+  delete: {
+    params: {
+      id: Joi.number().integer().max(999999999).required(),
+    },
+  },
+
   get: {
     params: {
       id: Joi.number().integer().max(999999999).required(),
@@ -25,12 +31,6 @@ module.exports = {
         name: Joi.string(),
         url: Joi.string(),
       },
-    },
-  },
-
-  delete: {
-    params: {
-      id: Joi.number().integer().max(999999999).required(),
     },
   },
 };

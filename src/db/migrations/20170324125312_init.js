@@ -31,8 +31,8 @@ exports.up = (knex, Promise) =>
         .onDelete('cascade')
         .onUpdate('cascade');
       timeEntry.bigInteger('elapsed_time');
-      timeEntry.timestamp('start_time').defaultTo(knex.fn.now());
-      timeEntry.timestamp('stop_time').defaultTo(knex.fn.now());
+      timeEntry.timestamp('start_time');
+      timeEntry.timestamp('stop_time');
       timeEntry.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
     }),
   ]);

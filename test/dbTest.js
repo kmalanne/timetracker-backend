@@ -142,7 +142,7 @@ describe('DB', () => {
 
   describe('TimeEntry', () => {
     it('should return all time entries', async () => {
-      const result = await TimeEntry.getTimeEntries();
+      const result = await TimeEntry.getTimeEntries({ page: 1, limit: 10 }, userId);
       result.should.be.a('array');
       result.length.should.equal(3);
       result[1].should.be.a('object');
@@ -166,22 +166,26 @@ describe('DB', () => {
 
     it('should add a time entry', async () => {
       const newTimeEntry = {
-        id: 1004,
         project: 1001,
-        user: 1,
-        elapsed_time: 3600
+        elapsed_time: 3600,
+        start_time: Date.now(),
+        stop_time: Date.now()
       };
 
-      const id = await TimeEntry.createTimeEntry(newTimeEntry);
+      const id = await TimeEntry.createTimeEntry(newTimeEntry, userId);
       const result = await TimeEntry.getTimeEntryById(id);
       result.should.be.a('array')
       result.length.should.equal(1);
       result[0].should.be.a('object');
       result[0].should.have.property('id');
-      result[0].id.should.equal(1004);
       result[0].should.have.property('project');
+      result[0].project.should.equal(1001);
       result[0].should.have.property('user');
+      result[0].user.should.equal(1);
       result[0].should.have.property('elapsed_time');
+      result[0].should.have.property('start_time');
+      result[0].should.have.property('stop_time');
+      result[0].should.have.property('created_at');
     });
 
     it('should delete a single time entry', async () => {

@@ -1,5 +1,5 @@
 const knex = require('../db');
-const parseId = require('../utils/parseId');
+const parseNumber = require('../utils/parseNumber');
 
 const table = 'app_user';
 
@@ -26,7 +26,7 @@ const User = {
   async getUserById(id) {
     const user = await knex.first('*')
       .from(table)
-      .where('id', parseId(id));
+      .where('id', parseNumber(id));
 
     return user;
   },

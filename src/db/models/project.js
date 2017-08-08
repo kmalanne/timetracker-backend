@@ -1,5 +1,5 @@
 const knex = require('../db');
-const parseId = require('../utils/parseId');
+const parseNumber = require('../utils/parseNumber');
 
 const User = require('./user');
 
@@ -19,19 +19,19 @@ const Project = {
   },
 
   async getProjectById(id) {
-    const rows = await knex.select('*')
+    const project = await knex.select('*')
       .from(table)
-      .where('id', parseId(id));
+      .where('id', parseNumber(id));
 
-    return rows;
+    return project;
   },
 
-  async createProject(params, userId) {
+  async createProject({ name, url }, userId) {
     const user = await User.getUser(userId);
 
     const newProject = {
-      name: params.name,
-      url: params.url,
+      name,
+      url,
       user: user.id,
     };
 
@@ -46,7 +46,7 @@ const Project = {
 
     const updated = await knex(table)
       .where({
-        id: parseId(id),
+        id: parseNumber(id),
         user: user.id,
       })
       .update({
@@ -62,7 +62,7 @@ const Project = {
 
     await knex(table)
       .where({
-        id: parseId(id),
+        id: parseNumber(id),
         user: user.id,
       })
       .del();
