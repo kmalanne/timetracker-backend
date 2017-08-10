@@ -25,6 +25,7 @@ describe('DB', () => {
   describe('Project', () => {
     it('should return all projects', async () => {
       const result = await Project.getProjects(userId);
+
       result.should.be.a('array');
       result.length.should.equal(3);
       result[0].should.be.a('object');
@@ -37,6 +38,7 @@ describe('DB', () => {
 
     it('should return a single project with id', async () => {
       const result = await Project.getProjectById(1001);
+
       result.should.be.a('array')
       result.length.should.equal(1);
       result[0].should.be.a('object');
@@ -59,6 +61,7 @@ describe('DB', () => {
 
       const id = await Project.createProject(newProject, userId);
       const result = await Project.getProjectById(id);
+
       result.should.be.a('array')
       result.length.should.equal(1);
       result[0].should.be.a('object');
@@ -80,6 +83,7 @@ describe('DB', () => {
 
       await Project.updateProject(1001, update, userId);
       const result = await Project.getProjectById(1001);
+
       result.should.be.a('array')
       result.length.should.equal(1);
       result[0].should.be.a('object');
@@ -97,6 +101,7 @@ describe('DB', () => {
     it('should delete a single project', async () => {
       await Project.deleteProject(1001, userId);
       const result = await Project.getProjects(userId);
+
       result.should.be.a('array')
       result.length.should.equal(2);
     });
@@ -105,6 +110,7 @@ describe('DB', () => {
   describe('User', () => {
     it('should return a single user with id', async () => {
       const result = await User.getUserById(1);
+
       result.should.be.a('object')
       result.should.have.property('id');
       result.id.should.equal(1);
@@ -115,6 +121,7 @@ describe('DB', () => {
 
     it('should return a single user with email and user id', async () => {
       const result = await User.getUser(userId);
+
       result.should.be.a('object')
       result.should.have.property('id');
       result.id.should.equal(1);
@@ -131,6 +138,7 @@ describe('DB', () => {
 
       const id = await User.createUser(newUser, userId);
       const result = await User.getUserById(id);
+
       result.should.be.a('object');
       result.should.have.property('id');
       result.id.should.equal(1000);
@@ -143,17 +151,19 @@ describe('DB', () => {
   describe('TimeEntry', () => {
     it('should return all time entries', async () => {
       const result = await TimeEntry.getTimeEntries({ page: 1, limit: 10 }, userId);
+
       result.should.be.a('array');
       result.length.should.equal(3);
       result[1].should.be.a('object');
-      result[1].should.have.property('id');
-      result[1].should.have.property('project');
-      result[1].should.have.property('user');
+      result[1].should.have.property('name');
       result[1].should.have.property('elapsed_time');
+      result[1].should.have.property('start_time');
+      result[1].should.have.property('stop_time');
     });
 
     it('should return a single TimeEntry with id', async () => {
       const result = await TimeEntry.getTimeEntryById(1001);
+
       result.should.be.a('array')
       result.length.should.equal(1);
       result[0].should.be.a('object');
@@ -168,12 +178,13 @@ describe('DB', () => {
       const newTimeEntry = {
         project: 1001,
         elapsed_time: 3600,
-        start_time: Date.now(),
-        stop_time: Date.now()
+        start_time: new Date,
+        stop_time: new Date
       };
 
       const id = await TimeEntry.createTimeEntry(newTimeEntry, userId);
       const result = await TimeEntry.getTimeEntryById(id);
+
       result.should.be.a('array')
       result.length.should.equal(1);
       result[0].should.be.a('object');
@@ -189,8 +200,9 @@ describe('DB', () => {
     });
 
     it('should delete a single time entry', async () => {
-      await TimeEntry.deleteTimeEntry(1001)
-      const result = await TimeEntry.getTimeEntries();
+      await TimeEntry.deleteTimeEntry(1001, userId)
+      const result = await TimeEntry.getTimeEntries({ page: 1, limit: 10 }, userId);
+
       result.should.be.a('array')
       result.length.should.equal(2);
     });

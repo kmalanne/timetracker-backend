@@ -1,3 +1,3 @@
-const parseNumber = id => parseInt(id, 10);
+const parseNumber = number => parseInt(number, 10);
 
 module.exports = parseNumber;

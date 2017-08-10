@@ -21,7 +21,7 @@ module.exports = {
   get: {
     query: {
       page: Joi.number().integer().max(9999).required(),
-      limit: Joi.number().integer().max(50).required(),
+      limit: Joi.number().integer().max(100).required(),
     },
   },
 };

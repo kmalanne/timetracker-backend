@@ -62,6 +62,13 @@ const TimeEntry = {
 
     return id;
   },
+
+  async getTotalCount() {
+    const count = await knex(table)
+      .count('*');
+
+    return parseNumber(count[0].count);
+  },
 };
 
 module.exports = TimeEntry;

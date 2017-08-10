@@ -7,7 +7,9 @@ const asyncRequest = require('../utils/asyncRequest');
 const router = express.Router();
 
 const getTimeEntries = async (req, res) => {
-  const result = await TimeEntry.getTimeEntries(req.query, req.user.sub);
+  const timeEntries = await TimeEntry.getTimeEntries(req.query, req.user.sub);
+  const count = await TimeEntry.getTotalCount();
+  const result = Object.assign({}, { timeEntries }, { total: count });
   res.status(200).json(result);
 };
 

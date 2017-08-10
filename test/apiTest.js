@@ -249,7 +249,7 @@ describe('API', () => {
     describe('GET /timeEntries', () => {
       it('should return all time entries', (done) => {
         chai.request(server)
-          .get('/timeEntries')
+          .get('/timeEntries/?page=1&limit=10')
           .set('Authorization', token)
           .end((err, res) => {
             res.should.have.status(200);
@@ -274,9 +274,12 @@ describe('API', () => {
           .post('/timeEntries')
           .set('Authorization', token)
           .send({
-            project: 1001,
-            user: 1,
-            elapsed_time: 3000
+            params: {
+              project: 1001,
+              elapsed_time: 3000,
+              start_time: new Date(),
+              stop_time: new Date()
+            }
           })
           .end((err, res) => {
             res.should.have.status(200);
@@ -290,9 +293,12 @@ describe('API', () => {
           .post('/timeEntries')
           .set('Authorization', token)
           .send({
-            project: 'asdf',
-            user: 'herp',
-            elapsed_time: 'derp'
+            params: {
+              project: 'asdf',
+              elapsed_time: 'derp',
+              start_time: new Date(),
+              stop_time: new Date()
+            }
           })
           .end((err, res) => {
             res.should.have.status(400);
