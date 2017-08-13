@@ -3,12 +3,10 @@ const Joi = require('joi');
 module.exports = {
   create: {
     body: {
-      params: {
-        project: Joi.number().integer().max(999999999).required(),
-        elapsed_time: Joi.number().integer().max(999999999).required(),
-        start_time: Joi.date().iso(),
-        stop_time: Joi.date().iso(),
-      },
+      project: Joi.number().integer().max(999999999).required(),
+      elapsed_time: Joi.number().integer().max(999999999).required(),
+      start_time: Joi.date().iso(),
+      stop_time: Joi.date().iso(),
     },
   },
 

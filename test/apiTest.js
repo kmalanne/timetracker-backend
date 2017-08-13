@@ -115,10 +115,8 @@ describe('API', () => {
           .post('/projects')
           .set('Authorization', token)
           .send({
-            params: {
-              name: 'test_project',
-              url: 'www.trolololo.ru',
-            }
+            name: 'test_project',
+            url: 'www.trolololo.ru',
           })
           .end((err, res) => {
             res.should.have.status(200);
@@ -132,10 +130,8 @@ describe('API', () => {
           .post('/projects')
           .set('Authorization', token)
           .send({
-            params: {
-              name: 1,
-              url: 2,
-            }
+            name: 1,
+            url: 2,
           })
           .end((err, res) => {
             res.should.have.status(400);
@@ -159,10 +155,8 @@ describe('API', () => {
           .put('/projects/1001')
           .set('Authorization', token)
           .send({
-            params: {
-              name: 'another_value',
-              url: 'http://another_url.com',
-            }
+            name: 'another_value',
+            url: 'http://another_url.com',
           })
           .end((err, res) => {
             res.should.have.status(200);
@@ -176,10 +170,8 @@ describe('API', () => {
           .put('/projects/scamelot')
           .set('Authorization', token)
           .send({
-            params: {
-              name: 'invalid_request',
-              url: 'invalid_request',
-            }
+            name: 'invalid_request',
+            url: 'invalid_request',
           })
           .end((err, res) => {
             res.should.have.status(400);
@@ -192,10 +184,8 @@ describe('API', () => {
           .put('/projects/1')
           .set('Authorization', token)
           .send({
-            params: {
-              name: 1,
-              url: 2,
-            }
+            name: 1,
+            url: 2,
           })
           .end((err, res) => {
             res.should.have.status(400);
@@ -274,12 +264,10 @@ describe('API', () => {
           .post('/timeEntries')
           .set('Authorization', token)
           .send({
-            params: {
-              project: 1001,
-              elapsed_time: 3000,
-              start_time: new Date(),
-              stop_time: new Date()
-            }
+            project: 1001,
+            elapsed_time: 3000,
+            start_time: new Date(),
+            stop_time: new Date()
           })
           .end((err, res) => {
             res.should.have.status(200);
@@ -293,12 +281,10 @@ describe('API', () => {
           .post('/timeEntries')
           .set('Authorization', token)
           .send({
-            params: {
-              project: 'asdf',
-              elapsed_time: 'derp',
-              start_time: new Date(),
-              stop_time: new Date()
-            }
+            project: 'asdf',
+            elapsed_time: 'derp',
+            start_time: new Date(),
+            stop_time: new Date()
           })
           .end((err, res) => {
             res.should.have.status(400);

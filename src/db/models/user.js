@@ -4,6 +4,13 @@ const parseNumber = require('../utils/parseNumber');
 const table = 'app_user';
 
 const User = {
+  async createUser(user) {
+    const rows = await knex(table)
+      .insert(user, 'id');
+
+    return rows;
+  },
+
   async getUser(userId) {
     let user = await knex.first('*')
       .from(table)
@@ -29,13 +36,6 @@ const User = {
       .where('id', parseNumber(id));
 
     return user;
-  },
-
-  async createUser(user) {
-    const rows = await knex(table)
-      .insert(user, 'id');
-
-    return rows;
   },
 };
 

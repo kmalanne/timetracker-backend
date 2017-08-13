@@ -7,9 +7,41 @@ const table = 'time_entry';
 
 // TimeEntry
 const TimeEntry = {
-  async getTimeEntries({ page, limit }, userId) {
+  async createTimeEntry(options, userId) {
     const user = await User.getUser(userId);
 
+    const { project, elapsed_time, start_time, stop_time } = options;
+    const newTimeEntry = {
+      project,
+      elapsed_time,
+      start_time,
+      stop_time,
+      user: user.id,
+    };
+
+    const inserted = await knex(table)
+      .insert(newTimeEntry, 'id');
+
+    return inserted;
+  },
+
+  async deleteTimeEntry(id, userId) {
+    const user = await User.getUser(userId);
+
+    await knex(table)
+      .where({
+        id: parseNumber(id),
+        user: user.id,
+      })
+      .del();
+
+    return id;
+  },
+
+  async getTimeEntries(options = {}, userId) {
+    const user = await User.getUser(userId);
+
+    const { limit, page } = options;
     const limitNbr = parseNumber(limit) || 10;
     const pageNbr = parseNumber(page) || 1;
     const offset = (pageNbr - 1) * limitNbr;
@@ -31,36 +63,6 @@ const TimeEntry = {
       .where('id', parseNumber(id));
 
     return timeEntry;
-  },
-
-  async createTimeEntry({ project, elapsed_time, start_time, stop_time }, userId) {
-    const user = await User.getUser(userId);
-
-    const newTimeEntry = {
-      project,
-      elapsed_time,
-      start_time,
-      stop_time,
-      user: user.id,
-    };
-
-    const timeEntry = await knex(table)
-      .insert(newTimeEntry, 'id');
-
-    return timeEntry;
-  },
-
-  async deleteTimeEntry(id, userId) {
-    const user = await User.getUser(userId);
-
-    await knex(table)
-      .where({
-        id: parseNumber(id),
-        user: user.id,
-      })
-      .del();
-
-    return id;
   },
 
   async getTotalCount() {

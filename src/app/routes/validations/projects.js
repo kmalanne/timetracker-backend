@@ -3,10 +3,8 @@ const Joi = require('joi');
 module.exports = {
   create: {
     body: {
-      params: {
-        name: Joi.string(),
-        url: Joi.string(),
-      },
+      name: Joi.string().max(100),
+      url: Joi.string(),
     },
   },
 
@@ -27,10 +25,8 @@ module.exports = {
       id: Joi.number().integer().max(999999999).required(),
     },
     body: {
-      params: {
-        name: Joi.string(),
-        url: Joi.string(),
-      },
+      name: Joi.string().max(100),
+      url: Joi.string(),
     },
   },
 };

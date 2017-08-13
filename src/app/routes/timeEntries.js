@@ -7,20 +7,23 @@ const asyncRequest = require('../utils/asyncRequest');
 const router = express.Router();
 
 const getTimeEntries = async (req, res) => {
-  const timeEntries = await TimeEntry.getTimeEntries(req.query, req.user.sub);
+  const { query, user } = req;
+  const timeEntries = await TimeEntry.getTimeEntries(query, user.sub);
   const count = await TimeEntry.getTotalCount();
   const result = Object.assign({}, { timeEntries }, { total: count });
   res.status(200).json(result);
 };
 
 const createTimeEntry = async (req, res) => {
-  const id = await TimeEntry.createTimeEntry(req.body.params, req.user.sub);
+  const { body, user } = req;
+  const id = await TimeEntry.createTimeEntry(body, user.sub);
   const result = await TimeEntry.getTimeEntryById(id);
   res.status(200).json(result);
 };
 
 const deleteTimeEntry = async (req, res) => {
-  const result = TimeEntry.deleteTimeEntry(req.params.id, req.user.sub);
+  const { params, user } = req;
+  const result = TimeEntry.deleteTimeEntry(params.id, user.sub);
   res.status(200).json(result);
 };
 

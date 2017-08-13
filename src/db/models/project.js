@@ -26,35 +26,38 @@ const Project = {
     return project;
   },
 
-  async createProject({ name, url }, userId) {
+  async createProject(options, userId) {
     const user = await User.getUser(userId);
 
+    const { name, url } = options;
     const newProject = {
       name,
       url,
       user: user.id,
     };
 
-    const project = await knex(table)
+    const inserted = await knex(table)
       .insert(newProject, 'id');
 
-    return project;
+    return inserted;
   },
 
-  async updateProject(id, params, userId) {
+  async updateProject(id, options, userId) {
     const user = await User.getUser(userId);
 
-    const updated = await knex(table)
+    const { name, url } = options;
+
+    const updatedId = await knex(table)
       .where({
         id: parseNumber(id),
         user: user.id,
       })
       .update({
-        name: params.name,
-        url: params.url,
+        name,
+        url,
       });
 
-    return updated;
+    return updatedId;
   },
 
   async deleteProject(id, userId) {
