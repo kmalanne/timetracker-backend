@@ -10,12 +10,12 @@ const Project = {
   async getProjects(userId) {
     const user = await User.getUser(userId);
 
-    const projects = await knex.select('*')
+    const data = await knex.select('*')
       .from(table)
       .where('user', user.id)
       .orderBy('id', 'asc');
 
-    return projects;
+    return data;
   },
 
   async getProjectById(id) {

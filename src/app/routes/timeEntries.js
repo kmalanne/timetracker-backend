@@ -8,9 +8,9 @@ const router = express.Router();
 
 const getTimeEntries = async (req, res) => {
   const { query, user } = req;
-  const timeEntries = await TimeEntry.getTimeEntries(query, user.sub);
+  const data = await TimeEntry.getTimeEntries(query, user.sub);
   const count = await TimeEntry.getTotalCount();
-  const result = Object.assign({}, { timeEntries }, { total: count });
+  const result = Object.assign({}, { data }, { total: count });
   res.status(200).json(result);
 };
 

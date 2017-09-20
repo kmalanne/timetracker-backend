@@ -5,8 +5,8 @@ module.exports = {
     body: {
       project: Joi.number().integer().max(999999999).required(),
       elapsed_time: Joi.number().integer().max(999999999).required(),
-      start_time: Joi.date().iso(),
-      stop_time: Joi.date().iso(),
+      start_time: Joi.date().iso().required(),
+      stop_time: Joi.date().iso().required(),
     },
   },
 
@@ -18,8 +18,10 @@ module.exports = {
 
   get: {
     query: {
-      page: Joi.number().integer().max(9999).required(),
-      limit: Joi.number().integer().max(100).required(),
+      page: Joi.number().integer().max(9999),
+      limit: Joi.number().integer().max(100),
+      start_date: Joi.date().iso(),
+      end_date: Joi.date().iso(),
     },
   },
 };

@@ -41,7 +41,17 @@ const TimeEntry = {
   async getTimeEntries(options = {}, userId) {
     const user = await User.getUser(userId);
 
-    const { limit, page } = options;
+    const { limit, page, start_date: startDate, end_date: endDate } = options;
+
+    if (limit && page) {
+      return this.getTimeEntriesPaginated({ limit, page, user });
+    }
+
+    return this.getTimeEntriesByRange({ startDate, endDate, user });
+  },
+
+  async getTimeEntriesPaginated(options = {}) {
+    const { limit, page, user } = options;
     const limitNbr = parseNumber(limit) || 10;
     const pageNbr = parseNumber(page) || 1;
     const offset = (pageNbr - 1) * limitNbr;
@@ -53,6 +63,19 @@ const TimeEntry = {
       .orderBy(`${table}.created_at`, 'desc')
       .limit(limitNbr)
       .offset(offset);
+
+    return timeEntries;
+  },
+
+  async getTimeEntriesByRange(options = {}) {
+    const { startDate, endDate, user } = options;
+
+    const timeEntries = await knex.select('time_entry.*', 'project.name')
+      .from(table)
+      .leftJoin('project', 'project.id', `${table}.project`)
+      .where(`${table}.user`, user.id)
+      .whereBetween(`${table}.created_at`, [startDate, endDate])
+      .orderBy(`${table}.created_at`, 'asc');
 
     return timeEntries;
   },
