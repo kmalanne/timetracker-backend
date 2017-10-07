@@ -70,7 +70,7 @@ const TimeEntry = {
   async getTimeEntriesByRange(options = {}) {
     const { startDate, endDate, user } = options;
 
-    const timeEntries = await knex.select('time_entry.*', 'project.name')
+    const timeEntries = await knex.select('time_entry.*', 'project.name', 'project.url')
       .from(table)
       .leftJoin('project', 'project.id', `${table}.project`)
       .where(`${table}.user`, user.id)
