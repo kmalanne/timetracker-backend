@@ -51,5 +51,8 @@
   "homepage": "https://github.com/kmalanne/timetracker-backend#readme",
   "bugs": {
     "url": "https://github.com/kmalanne/timetracker-backend/issues"
+  },
+  "engines": {
+    "node": "8.1.4"
   }
 }
