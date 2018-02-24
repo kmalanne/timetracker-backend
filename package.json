@@ -9,8 +9,8 @@
     "start": "nodemon src/server.js --exec babel-node",
     "lint": "./node_modules/.bin/eslint src/**",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --compilers js:babel-register --require babel-polyfill",
-    "migrate": "NODE_ENV=test ./node_modules/.bin/knex migrate:latest --knexfile src/db/knexfile.js",
-    "seed": "NODE_ENV=test ./node_modules/.bin/knex seed:run --knexfile src/db/knexfile.js",
+    "migrate": "NODE_ENV=test ./node_modules/.bin/knex migrate:latest",
+    "seed": "NODE_ENV=test ./node_modules/.bin/knex seed:run",
     "db_up": "npm run migrate && npm run seed"
   },
   "keywords": [
