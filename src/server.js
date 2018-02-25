@@ -1,6 +1,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 3000;
 
+require('babel-polyfill');
 const db = require('./db/db');
 const app = require('./app/app');
 

@@ -1,1 +1,1 @@
-web: NODE_ENV=production ./node_modules/.bin/babel-node --presets latest ./src/server.js
+web: NODE_ENV=production ./dist/server.js
