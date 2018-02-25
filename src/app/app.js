@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 
 const projects = require('./routes/projects');
 const timeEntries = require('./routes/timeEntries');
+const ping = require('./routes/ping');
 const error = require('./routes/error');
 
 module.exports = () => {
@@ -26,6 +27,7 @@ module.exports = () => {
 
   app.use('/projects', authenticate, projects);
   app.use('/timeEntries', authenticate, timeEntries);
+  app.use('/ping', ping);
   app.use(error);
 
   return app;
