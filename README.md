@@ -8,7 +8,7 @@ ExpressJS backend REST API for real time time tracking app
 
 * `docker-compose up` Build docker images and start Express and Postgres containers
 
-Server runs at http://localhost:3000
+Development server runs at http://localhost:3000
 
 In order to persist data, `docker-compose.yml` volumes needs to be uncommented (not for development/testing)
 
@@ -19,7 +19,6 @@ API uses JWT authentication with help of Auth0. To make authentication work crea
 ```
 AUTH0_CLIENT_SECRET=your_secret
 DATABASE_URL=your_database_url
-DATABASE_URL_TEST=your_testing_database_url
 ```
 
 Client using API should use Auth0 lock for client side authentication.
