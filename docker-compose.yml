@@ -9,7 +9,7 @@ services:
     volumes:
       - '.:/app'
   postgres:
-    image: postgres:latest
+    image: postgres:9.6
     ports:
       - '5432:5432'
     # persists data, remove when needed

@@ -7,6 +7,7 @@ ExpressJS backend REST API for real time time tracking app
 ## Get started
 
 * `docker-compose up` Build docker images and start Express and Postgres containers
+* `./node_modules/.bin/knex migrate:latest --knexfile src/db/knexfile.js` migrate database
 
 Development server runs at http://localhost:3000
 
